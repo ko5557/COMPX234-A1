@@ -20,6 +20,9 @@ class Assignment1:
         self.print_list = printList()  # Create an empty list of print requests
         self.mThreads = []             # list for machine threads
         self.pThreads = []             # list for printer threads
+        self.lock = threading.Lock()
+        self.condititon = threading.Condition(self.lock)
+        
 
     def startSimulation(self):
         # Create Machine and Printer threads
