@@ -47,6 +47,9 @@ class Assignment1:
 
         # Finish simulation
         self.sim_active = False
+        with self.condititon:
+            self.condition.notify_all()
+
 
         # Wait until all printer threads finish by joining them
         # Write code here
@@ -67,9 +70,13 @@ class Assignment1:
             while self.outer.sim_active:
                 # Simulate printer taking some time to print the document
                 self.printerSleep()
+                with self.outer.condition:
+                    while self.outer.print_list.head is None and self.outer.sim_active:
+                        self.outer.condition.wait()
                 # Grab the request at the head of the queue and print it
                 # Write code here
                 self.printDox(self.printerID)
+                self.outer.condition.notify()
 
         def printerSleep(self):
             sleepSeconds = random.randint(1, self.outer.MAX_PRINTER_SLEEP)
