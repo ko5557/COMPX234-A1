@@ -104,6 +104,14 @@ class Assignment1:
                     while current:
                         count += 1
                         current = current.next
+                    while count >= self.outer.QUEUE_CAPACITY and self.outer.sim.active:
+                        self.outer.condition.wait()
+                #Calculate the QUEUE length again
+                        count = 0
+                        current = self.outer.print_list.head
+                        while current:
+                            count += 1
+                            current = current.next
                 # Machine wakes up and sends a print request
                 # Write code here
                 self.printRequest(self.machineID)
